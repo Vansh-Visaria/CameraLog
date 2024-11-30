@@ -5,30 +5,25 @@ import os
 def extract_exif(image_path):
     try:
         image = Image.open(image_path)
-
-        # Check if the image has EXIF data
         if 'exif' not in image.info:
             print("No EXIF data found.")
             return None
 
         exif_data = piexif.load(image.info['exif'])
 
-        # Print available EXIF keys for debugging
         print("Available EXIF data keys:", exif_data.keys())
 
-        # Check if Exif section is empty
         if not exif_data['Exif']:
             print("No EXIF data found in Exif section:", exif_data)
             return None
 
-        # Extract relevant information using integer keys
         camera_info = {
-            "Make": exif_data['0th'].get(271, b'').decode('utf-8', 'ignore'),  # 271 = Make
-            "Model": exif_data['0th'].get(272, b'').decode('utf-8', 'ignore'),  # 272 = Model
-            "DateTime": exif_data['0th'].get(306, b'').decode('utf-8', 'ignore'),  # 306 = DateTime
-            "ExposureTime": exif_data['Exif'].get(33434, b''),  # 33434 = ExposureTime
-            "FNumber": exif_data['Exif'].get(33437, b''),  # 33437 = FNumber
-            "ISOSpeedRatings": exif_data['Exif'].get(34855, b''),  # 34855 = ISOSpeedRatings
+            "Make": exif_data['0th'].get(271, b'').decode('utf-8', 'ignore'), 
+            "Model": exif_data['0th'].get(272, b'').decode('utf-8', 'ignore'), 
+            "DateTime": exif_data['0th'].get(306, b'').decode('utf-8', 'ignore'), 
+            "ExposureTime": exif_data['Exif'].get(33434, b''), 
+            "FNumber": exif_data['Exif'].get(33437, b''),  
+            "ISOSpeedRatings": exif_data['Exif'].get(34855, b''),  
             
         }
 
